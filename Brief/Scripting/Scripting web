@@ -21,7 +21,7 @@ $ipAddresses.IPAddressToString
 # Obtenir les informations du serveur DNS
 $dnsServers = Get-DnsClientServerAddress | Select-Object -ExpandProperty ServerAddresses
 
-# Afficher les informations du serveur DNS
+# Affiche les informations du serveur DNS
 Write-Output "Serveurs DNS utilisés :"
 $dnsServers 
 
