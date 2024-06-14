@@ -1,4 +1,4 @@
-#######Réaliser une requête Web GET sur un site Web (Defaut = https://taisen.fr)
+########Réaliser une requête Web GET sur un site Web (Defaut = https://taisen.fr)
 
 #l'URL du site Web
 $url = "https://taisen.fr"
@@ -14,7 +14,7 @@ $domain = "google.fr"
 # Résoudre l'adresse IP du nom de domaine
 $ipAddresses = [System.Net.Dns]::GetHostAddresses($domain)
 
-# Afficher les adresses IP
+# Affiche les adresses IP
 Write-Output "Adresses IP pour $domain :"
 $ipAddresses.IPAddressToString
 
