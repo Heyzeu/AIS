@@ -1,0 +1,171 @@
+#######Réaliser une requête Web GET sur un site Web (Defaut = https://taisen.fr)
+
+#l'URL du site Web
+$url = "https://taisen.fr"
+# Envoyer la requête GET
+$response = Invoke-WebRequest -Uri $url -Method Get
+# Afficher le contenu de la réponse
+Write-Output $response.Content 
+ Afficher l'IP et le nom du serveur DNS qui résout le nom de domaine
+
+# Définir le nom de domaine
+$domain = "google.fr"
+
+# Résoudre l'adresse IP du nom de domaine
+$ipAddresses = [System.Net.Dns]::GetHostAddresses($domain)
+
+# Afficher les adresses IP
+Write-Output "Adresses IP pour $domain :"
+$ipAddresses.IPAddressToString
+
+# Obtenir les informations du serveur DNS
+$dnsServers = Get-DnsClientServerAddress | Select-Object -ExpandProperty ServerAddresses
+
+# Afficher les informations du serveur DNS
+Write-Output "Serveurs DNS utilisés :"
+$dnsServers 
+
+#########Afficher l'IP et le port Source
+
+Get-NetTCPConnection | Select-Object -Property State, LocalAddress, LocalPort
+ 
+   ############ Afficher l'IP et le port de destination#########
+
+Get-NetTCPConnection | Select-Object -Property State, RemoteAddress, RemotePort 
+
+################Afficher les Headers, si le header est connu, alors afficher son utilité
+
+#l'URL du site web
+$url = "https://taisen.fr/"
+
+# Fait la requête web et récupère les headers
+$response = Invoke-WebRequest -Uri $url -Method Head
+
+# Affiche tous les headers
+$response.Headers
+
+# Liste des headers connus avec leur utilité 
+$headersUtilite = @{
+    "Server" = "Indique le serveur web utilisé par le site."
+    "Content-Type" = "Indique le type de contenu retourné par le serveur."
+    "Content-Length" = "Indique la taille du contenu retourné en octets."
+    "Last-Modified" = "Indique la date et l'heure de la dernière modification du contenu."
+    "Location" = "Indique une nouvelle URL à utiliser pour accéder à la ressource demandée."
+    "Set-Cookie" = "Définit un cookie dans le navigateur du client."
+    "Cache-Control" = "Contrôle le comportement du cache du navigateur."
+}
+
+# Affiche l'utilité des headers connus
+foreach ($header in $response.Headers.Keys) {
+    if ($headersUtilite.ContainsKey($header)) {
+        Write-Host "`n$header : $($headersUtilite[$header])"
+    }
+} 
+####################Afficher le Content-Type, s'il est générique, afficher son utilité
+
+$url = "https://www.google.com"  
+# Fait la requête web et récupère les headers
+$headers = Invoke-WebRequest -Uri $url -Method Head | Select-Object -ExpandProperty Headers
+
+# Affiche le Content-Type
+$contentType = $headers["Content-Type"]
+if (-not [string]::IsNullOrEmpty($contentType)) {
+    Write-Host "Content-Type : $contentType"
+
+    # Définition des types de Content-Type génériques et leurs utilités
+    $genericContentTypes = @{
+        "text/html" = "Contenu HTML"
+        "text/plain" = "Contenu texte simple"
+        "application/json" = "Données JSON"
+        "application/xml" = "Données XML"
+        "image/jpeg" = "Image JPEG"
+        "image/png" = "Image PNG"
+        # Ajoutez d'autres types de contenu génériques si nécessaire
+    }
+
+    # Vérifie si le Content-Type est générique et affiche son utilité le cas échéant
+    if ($genericContentTypes.ContainsKey($contentType.ToLower())) {
+        Write-Host "Utilité : $($genericContentTypes[$contentType.ToLower()])"
+    } else {
+        Write-Host "Le Content-Type spécifié n'est pas générique ou n'est pas défini dans le script."
+    }
+} else {
+    Write-Host "Aucun Content-Type trouvé dans les headers de la réponse."
+}
+ 
+##################Stocker dans une variable de type tableau les différentes balises Web
+
+# URL de la page web à analyser
+$url = "https://www.google.fr"
+
+# Télécharge le contenu HTML de la page
+    $webContent = Invoke-WebRequest -Uri $url -UseBasicParsing
+
+# Récupère toutes les balises HTML de la page dans un tableau
+$balises = [regex]::Matches($webContent.Content, "<[^>]+>") | ForEach-Object { $_.Value }
+
+# Affiche les balises trouvées
+Write-Host "Balises HTML trouvées sur la page $url :"
+$balises
+ 
+
+
+
+####################Afficher les différents éléments du certificat
+
+#l'URL du site web
+$url = "https://taisen.fr/"
+
+# Créer une requête Web
+$request = [System.Net.HttpWebRequest]::Create($url)
+$request.Method = "GET"
+$request.AllowAutoRedirect = $false
+
+# Faire la requête et obtenir la réponse
+try {
+    $response = $request.GetResponse()
+    $response.Close()
+} catch [System.Net.WebException] {
+    $response = $_.Exception.Response
+}
+
+# Obtenir le certificat
+$certificate = $request.ServicePoint.Certificate
+
+# Convertir le certificat en un objet X509Certificate2 pour obtenir plus d'informations
+$cert2 = New-Object System.Security.Cryptography.X509Certificates.X509Certificate2 $certificate
+
+# Affiche les informations du certificat
+Write-Output "Subject: $($cert2.Subject)"
+Write-Output "Issuer: $($cert2.Issuer)"
+Write-Output "Valid From: $($cert2.NotBefore)"
+Write-Output "Valid Until: $($cert2.NotAfter)"
+Write-Output "Thumbprint: $($cert2.Thumbprint)" 
+Afficher les noms de certificats de la chaine de confiance
+#l'URL du site web
+$url = "https://taisen.fr/"
+
+# Créer une requête Web
+$request = [System.Net.HttpWebRequest]::Create($url)
+
+# Obtenir la réponse et le certificat
+$response = $request.GetResponse()
+$certificate = $request.ServicePoint.Certificate
+$response.Close()
+
+# Convertir le certificat en un objet X509Certificate2
+$cert2 = New-Object System.Security.Cryptography.X509Certificates.X509Certificate2 $certificate
+
+# Afficher le nom de l'autorité qui a signé le certificat
+$issuer = $cert2.Issuer
+Write-Output "Issuer: $issuer" 
+
+
+###################Afficher la liste des IP équipements réseaux traversés pour atteindre le site Web
+
+$url = "taisen.fr"
+
+$result = Test-NetConnection -ComputerName $url -TraceRoute
+
+$result.TraceRoute 
+
