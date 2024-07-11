@@ -1,0 +1,14 @@
+1.	Config Auditpol
+
+ 
+2.	Comparatifs PolicyAnalyzer avant et après le durcissement.
+Avant :
+ 
+Après :
+ 
+3.	Résultat de la commande Get-BitLockerVolume
+ 
+4.	Résultat de la commande Get-MpPreference
+ 
+
+La configuration Auditpol initiale n’est pas persistante car les GPO sont prioritaires.
