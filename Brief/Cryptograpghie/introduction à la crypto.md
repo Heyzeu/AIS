@@ -140,7 +140,7 @@ print("Message déchiffré:", plaintext.decode('utf-8'))
 ```
 
 
-Mon code python qui génère la clef partiel automatiquement
+Mon code python qui génère les clefs partiel automatiquement
 
 ```python
 
