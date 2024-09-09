@@ -51,7 +51,7 @@ Si l'IV est toujours le même, cela présente plusieurs risques, comme :
 * Chiffrement déterministe : Si les mêmes données sont chiffrées avec la même clé et le même IV, le résultat sera toujours identique. Cela permet à un attaquant de deviner si des données spécifiques ont été chiffrées.
 
 Il est essentiel de générer un IV aléatoire à chaque chiffrement et de le transmettre avec les données chiffrées.
-## Comment pourrait-on s'assurer de l'intégrité du message et de l'authenticité du destinataire ? Ajouter cette fonctionnalité à l'aide d'un script ou d'un outil en CLI.
+## Comment pourrait-on s'assurer de l'intégrité du message et de l'authenticité du destinataire ?
 
 * Signature numérique : L'émetteur signe le message avec sa clé privée pour assurer son authenticité.
 * HMAC : Un HMAC est ajouté pour garantir que le message n'a pas été modifié (intégrité).
