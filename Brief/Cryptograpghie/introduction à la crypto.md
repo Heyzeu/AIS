@@ -38,30 +38,6 @@ $keyBase64 | Out-File -FilePath "C:\Faes_key.txt"
 $ivBase64 | Out-File -FilePath "C:\aes_iv.txt"
 
 ```
-
-
-#### Déchiffrement par le destinataire
-````powershell
-# Charger la clé privée RSA
-$privateKeyPath = "path\to\private_key.pem"
-$privateKey = [System.IO.File]::ReadAllText($privateKeyPath)
-
-# Charger les clés chiffrées
-$encryptedKey = [System.IO.File]::ReadAllText("C:\TestNico\encrypted_aes_key.txt")
-$encryptedIV = [System.IO.File]::ReadAllText("C:\TestNico\encrypted_aes_iv.txt")
-
-# Convertir la clé privée en objet RSA
-$rsa = [System.Security.Cryptography.RSACryptoServiceProvider]::new()
-$rsa.FromXmlString($privateKey)
-
-# Déchiffrer la clé AES et l'IV
-$decryptedKey = [Convert]::ToBase64String($rsa.Decrypt([Convert]::FromBase64String($encryptedKey), $true))
-$decryptedIV = [Convert]::ToBase64String($rsa.Decrypt([Convert]::FromBase64String($encryptedIV), $true))
-
-# Afficher les clés déchiffrées
-Write-Output "Clé AES-256 déchiffrée : $decryptedKey"
-Write-Output "IV déchiffré : $decryptedIV"
-````
 ## Comment générer une **clé de chiffrement** de manière sure ? Quel est le risque si les **IV** sont toujours les mêmes ?
 
 Cette commande génère une clé sécurisée en utilisant l'algorithme AES:
